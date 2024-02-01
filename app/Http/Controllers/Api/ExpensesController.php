@@ -58,14 +58,33 @@ class ExpensesController extends Controller
     {
         try
         {
-            $expenses = Expense::where(DB::raw("DATE_FORMAT(transaction_date, '%Y-%m-%d')"), $request->dt)->get();  
-            $payments = Payment::where(DB::raw("DATE_FORMAT(date_paid, '%Y-%m-%d')"), $request->dt)->get();        
+            $expenses = Expense::where(DB::raw("DATE_FORMAT(transaction_date, '%Y-%m-%d')"), $request->dt)->orderBy('transaction_date')->get();  
+            $expense = DB::table('payments')
+                    ->leftJoin('users', 'payments.user_id', '=', 'users.id')                    
+                    ->select('payments.id AS id', 'payments.amount AS amount', 'payments.date_paid AS date_paid', 
+                            'payments.method AS method', 'payments.received_by AS received_by', 
+                            'users.role AS role', 'users.last_name AS last_name'
+                    )->where(DB::raw("DATE_FORMAT(payments.date_paid, '%Y-%m-%d')"), $request->dt)
+                    ->where('users.role', 'agent')
+                    ->get();
+            $payments = DB::table('payments')
+                    ->leftJoin('users', 'payments.user_id', '=', 'users.id')
+                    ->leftJoin('contacts', 'users.id', '=', 'contacts.user_id')
+                    ->leftJoin('areas', 'contacts.area_id', '=', 'areas.id')
+                    ->select('payments.id AS payment_id', 'payments.amount AS payment_amount', 'payments.date_paid AS date_paid', 
+                            'payments.method AS method', 'users.role AS role', 'users.first_name AS first_name', 
+                            'users.last_name AS last_name', 'users.middle_name AS middle_name', 'users.extension_name AS extension_name',
+                            'contacts.block AS block', 'contacts.lot AS lot', 'areas.name AS area'               
+                    )->where(DB::raw("DATE_FORMAT(payments.date_paid, '%Y-%m-%d')"), $request->dt)
+                    ->where('users.role', 'client')
+                    ->orderBy('payments.date_paid')->get();       
         } catch (Exception $e)
         {
-            $expenses = $e->getMessage();
+            $payments = $e->getMessage();
         }
         return response()->json([
             'expenses' => $expenses,
+            'expense' => $expense,
             'payments' => $payments,
         ]);
     }
