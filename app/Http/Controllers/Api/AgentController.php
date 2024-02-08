@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\Contact;
+use App\Models\Expense;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -122,7 +123,16 @@ class AgentController extends Controller
                     'method' => $request->method,
                     'received_by' => $request->received_by,
                 ];
+                $user = User::find($request->id);
+                $desc = $request->received_by. " COMM - " .$user->last_name;
                 $payment = Payment::create($data); 
+                $transData = [
+                    'amount' => $request->amount,
+                    'type' => 'commission',
+                    'transaction_date' => $date_paid,
+                    'description' => $desc,
+                ];
+                $transaction = Expense::create($transData);
             }                                      
         } catch (Exception $e)
         {

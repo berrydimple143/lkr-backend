@@ -70,6 +70,7 @@ Route::controller(AreaController::class)->prefix('areas')->group(function () {
     Route::post('show', 'show');
     Route::post('create', 'create');
     Route::post('edit', 'edit');
+    Route::post('getCollectablesByArea', 'getCollectablesByArea');
     Route::post('update', 'update');
     Route::post('destroy', 'destroy');
 });
