@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\AgentController;
 use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\ExpensesController;
+use App\Http\Controllers\Api\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,17 @@ Route::controller(AreaController::class)->prefix('areas')->group(function () {
 });
 
 Route::controller(ExpensesController::class)->prefix('expenses')->group(function () {
+    Route::get('list', 'index'); 
+    Route::post('show', 'show');
+    Route::post('create', 'create');
+    Route::post('edit', 'edit');
+    Route::post('byDate', 'byDate');
+    Route::post('reports', 'reports');
+    Route::post('update', 'update');
+    Route::post('destroy', 'destroy');
+});
+
+Route::controller(ReportsController::class)->prefix('reports')->group(function () {
     Route::get('list', 'index'); 
     Route::post('show', 'show');
     Route::post('create', 'create');
