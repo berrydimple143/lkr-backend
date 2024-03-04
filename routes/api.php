@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\AgentController;
 use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\ExpensesController;
 use App\Http\Controllers\Api\ReportsController;
+use App\Http\Controllers\Api\ManagerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,4 +97,16 @@ Route::controller(ReportsController::class)->prefix('reports')->group(function (
     Route::post('reports', 'reports');
     Route::post('update', 'update');
     Route::post('destroy', 'destroy');
+});
+
+Route::controller(ManagerController::class)->prefix('managers')->group(function () {
+    Route::get('list', 'index');
+    Route::post('info', 'info');
+    Route::post('create', 'create');
+    Route::post('add/agent', 'addAgent');
+    Route::post('agents', 'getAgents');
+    Route::post('edit', 'edit');
+    Route::post('update', 'update');
+    Route::post('destroy', 'destroy');
+    Route::post('agent/destroy', 'deleteAgent');
 });
