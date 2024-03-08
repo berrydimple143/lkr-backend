@@ -3,9 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Api\RankController;
-use App\Http\Controllers\Api\CrewController;
-use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\AgentController;
@@ -13,17 +10,8 @@ use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\ExpensesController;
 use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\ManagerController;
+use App\Http\Controllers\Api\CommonController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
@@ -109,4 +97,8 @@ Route::controller(ManagerController::class)->prefix('managers')->group(function 
     Route::post('update', 'update');
     Route::post('destroy', 'destroy');
     Route::post('agent/destroy', 'deleteAgent');
+});
+
+Route::controller(CommonController::class)->prefix('common')->group(function () {    
+    Route::post('monthly-expenses', 'monthlyExpense');    
 });
