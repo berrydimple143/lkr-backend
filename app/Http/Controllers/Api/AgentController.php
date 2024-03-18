@@ -102,6 +102,21 @@ class AgentController extends Controller
         ]);
     }
 
+    public function updatePayment(Request $request) 
+    {
+        try
+        {
+            $clientIds = User::where('role', 'agent')->get('id');
+            $status = Payment::whereIn('user_id', $clientIds)->update(['type' => 'agent']);
+        } catch (Exception $e)
+        {
+            $status = $e->getMessage();
+        }
+        return response()->json([
+            'status' => $status,
+        ]);
+    }
+
     public function payment(Request $request)
     {
         try
@@ -122,6 +137,7 @@ class AgentController extends Controller
                     'amount' => $request->amount,
                     'method' => $request->method,
                     'received_by' => $request->received_by,
+                    'type' => 'agent',
                 ];
                 $user = User::find($request->id);
                 $desc = $request->received_by. " COMM - " .$user->last_name;

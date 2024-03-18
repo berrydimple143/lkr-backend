@@ -122,6 +122,7 @@ class ClientController extends Controller
                     'amount' => $request->amount,
                     'method' => $request->method,
                     'received_by' => $request->received_by,
+                    'type' => 'client',
                 ];
                 $payment = Payment::create($data); 
             }                                      
@@ -131,6 +132,21 @@ class ClientController extends Controller
         }
         return response()->json([
             'payment' => $payment,
+        ]);
+    }
+
+    public function updatePayment(Request $request) 
+    {
+        try
+        {
+            $clientIds = User::where('role', 'client')->get('id');
+            $status = Payment::whereIn('user_id', $clientIds)->update(['type' => 'client']);
+        } catch (Exception $e)
+        {
+            $status = $e->getMessage();
+        }
+        return response()->json([
+            'status' => $status,
         ]);
     }
 

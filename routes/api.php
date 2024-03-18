@@ -39,6 +39,7 @@ Route::controller(ClientController::class)->prefix('clients')->group(function ()
     Route::post('printSOA', 'printSOA');
     Route::post('update', 'update');
     Route::post('destroy', 'destroy');
+    Route::post('updatePayment', 'updatePayment');
 });
 
 Route::controller(AgentController::class)->prefix('agents')->group(function () {
@@ -53,6 +54,7 @@ Route::controller(AgentController::class)->prefix('agents')->group(function () {
     Route::post('printSOA', 'printSOA');
     Route::post('update', 'update');
     Route::post('destroy', 'destroy');
+    Route::post('updatePayment', 'updatePayment');
 });
 
 Route::controller(AreaController::class)->prefix('areas')->group(function () {
@@ -101,4 +103,5 @@ Route::controller(ManagerController::class)->prefix('managers')->group(function 
 
 Route::controller(CommonController::class)->prefix('common')->group(function () {    
     Route::post('monthly-expenses', 'monthlyExpense');    
+    Route::post('monthly-payments', 'monthlyPayment');  
 });

@@ -16,6 +16,7 @@ class Payment extends Model
         'status',
         'method',
         'received_by',
+        'type',
     ];
 
     public function user()
